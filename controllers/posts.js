@@ -57,15 +57,10 @@ exports.deleteOneGif = (req, res) => {
 
 
 
-
-
-
-
-
 exports.getOneGif = (req, res, next) => {
     const id = parseInt(req.params.id)
 
-    pool.query('SELECT * FROM posts WHERE post_id = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM posts JOIN comments ON posts.post_id = $1 AND comments.post_id = $1', [id], (error, results) => {
         if (error) {
             console.log(error)
             throw error

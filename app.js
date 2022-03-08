@@ -1,6 +1,5 @@
 const express = require('express')
 
-const app = express();
 
 const usersRoutes = require('./routes/users')
 const postsRoutes = require('./routes/posts')
@@ -8,7 +7,7 @@ const commentsRoutes = require('./routes/comments')
 
 require('dotenv').config()
 
-
+const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -24,14 +23,15 @@ app.use('/api/posts', postsRoutes)
 app.use('/api/comments', commentsRoutes)
 
 
-app.use((err, req, res, next) => {
-  if(err.statusCode) {
-      res.status(err.statusCode).send(err.message);
-  } else {
-      console.log(err);
-      res.status(500).send('An unexpected error occurred.');
-  }
-});
+// app.use((err, req, res, next) => {
+//   if(err.statusCode) {
+//       console.log('Uanable to connect to database');
+//       res.status(err.statusCode).send(err.message);
+//   } else {
+//       console.log('Successfully connected to SQL database.');
+//       res.status(200).send('Successfully connected.');
+//   }
+// });
 
 
 module.exports = app
