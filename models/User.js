@@ -1,10 +1,10 @@
 const db = require('../db');
 
 //User constructor
-function User ({
-  username, 
-  email, 
-  password, 
+function User({
+    username,
+    email,
+    password,
 }) {
     this.username = username;
     this.email = email;
@@ -12,15 +12,15 @@ function User ({
 };
 
 // add a createUser method to the prototype
-User.prototype.createUser = async function() {
+User.prototype.createUser = async function () {
     try {
         const { rows } = await db.query(
-            `INSERT INTO users(username, email, password, bio) 
+            `INSERT INTO users(username, email, password) 
             VALUES ($1, $2, $3, $4)`,
             [this.username, this.email, this.password]
         );
-        
-        return rows; 
+
+        return rows;
     } catch (error) {
         throw error;
     }
