@@ -98,6 +98,7 @@ exports.login = (req, res) => {
           { expiresIn: '24h' })
         res.status(200).json({
           email: req.body.email,
+          username: queryResult[0].username,
           user_id: queryResult[0].user_id,
           message: 'Login successful',
           token: token

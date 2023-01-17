@@ -6,7 +6,7 @@ const multer = require('../middleware/multer-config')
 
 const postsController = require('../controllers/posts')
 
-router.get('/', auth, postsController.getAllGifs)
+router.get('/', auth, postsController.getAllPosts)
 router.post('/', auth, postsController.uploadGif)
 router.get('/:id', auth, postsController.getOneGif)
 router.put('/:id', auth, postsController.modifyGif)

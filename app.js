@@ -17,21 +17,21 @@ app.use((req, res, next) => {
   next()
 });
 
-app.use('/images', express.static(path.join(__dirname, 'images')))
+// app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use('/api/users', usersRoutes)
 app.use('/api/posts', postsRoutes)
 
 
-app.use((err, req, res, next) => {
-  if (err.statusCode) {
-    console.log('Uanable to connect to database');
-    res.status(err.statusCode).send(err.message);
-  } else {
-    console.log('Successfully connected to SQL database.');
-    res.status(200).send('Successfully connected.');
-  }
-});
+// app.use((err, req, res, next) => {
+//   if (err.statusCode) {
+//     console.log('Uanable to connect to database');
+//     res.status(err.statusCode).send(err.message);
+//   } else {
+//     console.log('Successfully connected to SQL database.');
+//     res.status(200).send('Successfully connected.');
+//   }
+// });
 
 
 module.exports = app

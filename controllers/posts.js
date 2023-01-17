@@ -10,17 +10,16 @@ exports.uploadGif = (req, res, next) => {
 
   const post = {
     title: req.body.title,
-    // image_url: url + '/images/' + req.file.filename,
-    image_url: req.body.image_url,
+    users_read: req.body.users_read,
     user_id: req.body.user_id
   }
 
-  pool.query(`INSERT INTO posts(title, image_url, user_id) VALUES ($1, $2, $3)`,
-    [post.title, post.image_url, post.user_id], (error) => {
+  pool.query(`INSERT INTO posts(title, users_read, user_id) VALUES ($1, $2, $3)`,
+    [post.title, post.users_read, post.user_id], (error) => {
       if (error) {
-        return res.status(404).json({ 'message': 'Error when uploading File - user does not exist.' })
+        return res.status(404).json({ 'message': 'Error when sending request - check all required fields.' })
       }
-      res.status(201).send('Gif has been uploaded successfully!')
+      res.status(201).send({ 'message': 'Post has been published successfully!' })
     })
 }
 
@@ -29,7 +28,7 @@ exports.uploadGif = (req, res, next) => {
 
 exports.modifyGif = (req, res, next) => {
   const id = parseInt(req.params.id)
-  const { title, image_url, user_id } = req.body
+  const { title, users_read, user_id } = req.body
   // console.log({ 'id': req.auth.userId })
   let post = ''
 
@@ -74,19 +73,17 @@ exports.modifyGif = (req, res, next) => {
     // }
 
     post = {
-      title: req.body.title,
-      image_url: req.body.image_url,
-      user_id: req.body.user_id
+      users_read: req.body.users_read,
     }
 
     pool.query(
-      'UPDATE posts SET title = $1, image_url = $2, user_id = $3 WHERE post_id = $4',
-      [post.title, post.image_url, post.user_id, id],
+      'UPDATE posts SET users_read = $1 WHERE post_id = $2',
+      [post.users_read, id],
       (error, results) => {
         if (error) {
           throw error
         }
-        res.status(200).send(`Gif modified successfully!`)
+        res.status(200).send({ 'message': 'Post modified successfully!' })
       }
     )
   })
@@ -119,8 +116,8 @@ exports.deleteOneGif = (req, res, next) => {
       if (error) {
         throw error
       }
-      console.log('GIF successfully deleted.')
-      return res.status(200).send({ "message": 'GIF succesfully deleted' })
+      console.log('Post successfully deleted.')
+      return res.status(200).send({ "message": 'Post succesfully deleted' })
     })
 
 
@@ -159,8 +156,8 @@ exports.getOneGif = (req, res, next) => {
 
 
 
-exports.getAllGifs = (req, res, next) => {
-  pool.query('SELECT * FROM posts', (error, results) => {
+exports.getAllPosts = (req, res, next) => {
+  pool.query('SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id', (error, results) => {
     if (error) {
       throw error
     }
