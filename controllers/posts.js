@@ -11,11 +11,12 @@ exports.uploadGif = (req, res, next) => {
   const post = {
     title: req.body.title,
     users_read: req.body.users_read,
-    user_id: req.body.user_id
+    user_id: req.body.user_id,
+    username: req.body.username
   }
 
-  pool.query(`INSERT INTO posts(title, users_read, user_id) VALUES ($1, $2, $3)`,
-    [post.title, post.users_read, post.user_id], (error) => {
+  pool.query(`INSERT INTO posts(title, users_read, user_id, username) VALUES ($1, $2, $3, $4)`,
+    [post.title, post.users_read, post.user_id, post.username], (error) => {
       if (error) {
         return res.status(404).json({ 'message': 'Error when sending request - check all required fields.' })
       }
